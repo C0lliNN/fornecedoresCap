@@ -16,10 +16,32 @@ class AuthController {
         },
       });
     } catch (error) {
+      console.log(error);
       return res.status(501).json({
         payload: {
           status: "Failed",
           errors: error.message,
+        },
+      });
+    }
+  };
+
+  getUser = async (req, res) => {
+    try {
+      const user = req.user;
+      return res.status(200).json({
+        payload: {
+          status: "Success",
+          message: "Usuário coletado com sucesso.",
+          user,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(501).json({
+        payload: {
+          status: "Failed",
+          errors: { msg: "Falha ao coletar dados do usuário." },
         },
       });
     }
@@ -48,7 +70,7 @@ class AuthController {
 
   newUser = async (req, res) => {
     try {
-      const token = await this.user.createUser();
+      const token = await this.user.createUser(req.body);
       return res.status(201).json({
         payload: {
           status: "Success",
@@ -69,7 +91,7 @@ class AuthController {
 
   editUser = async (req, res) => {
     try {
-      await this.user.adminEditUser(req.params.id, req.body);
+      await this.user.editUser(req.params.id, req.body);
       return res.status(200).json({
         payload: {
           status: "Success",
@@ -111,3 +133,5 @@ class AuthController {
     }
   };
 }
+
+module.exports = AuthController;

@@ -1,11 +1,11 @@
 const xlsx = require("xlsx");
-const axios = require("axios");
+const path = require("path");
 
 class SupplierService {
   getData = async () => {
-    const res = await axios.get("../data/relatorio.xlsx");
+    const filePath = path.join(__dirname, "..", "data", "relatorio.xlsx");
 
-    const wb = xlsx.readFile(res.data);
+    const wb = xlsx.readFile(filePath);
     const fornecedoresPlan = wb.SheetNames[0];
     const data = xlsx.utils.sheet_to_json(wb.Sheets[fornecedoresPlan]);
 

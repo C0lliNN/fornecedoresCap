@@ -52,6 +52,14 @@ const login = [
 ];
 
 const editUser = [
+  param("id").custom(async (value) => {
+    if (!new mongoose.Types.ObjectId(value))
+      throw new Error("Id fornecido não é do tipo MongooseType");
+    const user = await User.findById(value);
+    if (!user)
+      throw new Error(`Usuário id: ${value}, não existe no banco de dados!`);
+    return true;
+  }),
   body("name")
     .optional()
     .isString()
@@ -87,7 +95,7 @@ const editUser = [
 
 const deleteUser = [
   param("id").custom(async (value) => {
-    if (!mongoose.Types.ObjectId(value))
+    if (!new mongoose.Types.ObjectId(value))
       throw new Error("Id fornecido não é do tipo MongooseType");
     const user = await User.findById(value);
     if (!user)

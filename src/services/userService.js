@@ -3,6 +3,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
 class UserService {
+  constructor() {
+    this.secret = process.env.SECRET;
+  }
   getUsers = async () => {
     const users = await User.find();
 
@@ -17,7 +20,7 @@ class UserService {
     await User.create({ name, email, password: passwordHash });
     const user = await User.findOne({ email: email }).select("-password");
 
-    const token = jwt.sign({ id: user._id }, secret, { expiresIn: "12h" });
+    const token = jwt.sign({ id: user._id }, this.secret, { expiresIn: "12h" });
     return token;
   };
 
@@ -36,7 +39,7 @@ class UserService {
       {
         id: user._id,
       },
-      secret,
+      this.secret,
       { expiresIn: "12h" }
     );
     return token;

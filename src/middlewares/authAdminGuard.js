@@ -4,6 +4,13 @@ const secret = process.env.SECRET;
 
 function AuthAdminGuard(req, res, next) {
   const headerToken = req.headers["authorization"];
+  if (!headerToken)
+    return res.status(401).json({
+      payload: {
+        status: "Failed",
+        message: "Nenhum token informado!",
+      },
+    });
   const token = headerToken.split(" ")[1];
 
   if (token) {
