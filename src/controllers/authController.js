@@ -6,131 +6,33 @@ class AuthController {
   }
 
   getUsers = async (req, res) => {
-    try {
-      const users = await this.user.getUsers();
-      return res.status(200).json({
-        payload: {
-          status: "Success",
-          message: "Users getted with success.",
-          users,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(501).json({
-        payload: {
-          status: "Failed",
-          errors: error.message,
-        },
-      });
-    }
+    const users = await this.user.getUsers();
+    res.status(200).json(users);
   };
 
   getUser = async (req, res) => {
-    try {
-      const user = req.user;
-      return res.status(200).json({
-        payload: {
-          status: "Success",
-          message: "Usuário coletado com sucesso.",
-          user,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(501).json({
-        payload: {
-          status: "Failed",
-          errors: { msg: "Falha ao coletar dados do usuário." },
-        },
-      });
-    }
+    const user = req.user;
+    return res.status(200).json(user);
   };
 
   login = async (req, res) => {
-    try {
-      const token = await this.user.login(req.body);
-      return res.status(200).json({
-        payload: {
-          status: "Sucess",
-          message: "Usuário logado com sucesso.",
-          token,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(401).json({
-        payload: {
-          status: "Failed",
-          errors: { msg: error.message },
-        },
-      });
-    }
+    const token = await this.user.login(req.body);
+    return res.status(200).json(token);
   };
 
   newUser = async (req, res) => {
-    try {
-      const token = await this.user.createUser(req.body);
-      return res.status(201).json({
-        payload: {
-          status: "Success",
-          message: "Usuário criado com sucesso!",
-          token,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(401).json({
-        payload: {
-          status: "Failed",
-          errors: { msg: "Falha ao criar novo usuário." },
-        },
-      });
-    }
+    const token = await this.user.createUser(req.body);
+    return res.status(201).json(token);
   };
 
   editUser = async (req, res) => {
-    try {
-      await this.user.editUser(req.params.id, req.body);
-      return res.status(200).json({
-        payload: {
-          status: "Success",
-          message: "Usuário editado com sucesso.",
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(501).json({
-        payload: {
-          status: "Failed",
-          errors: {
-            msg: error.message.includes("No data inserted.")
-              ? error.message
-              : "Falha ao editar o usuário, tente novamento mais tarde.",
-          },
-        },
-      });
-    }
+    await this.user.editUser(req.params.id, req.body);
+    return res.status(200);
   };
 
   deleteUser = async (req, res) => {
-    try {
-      await this.user.deleteUser(req.params.id);
-      return res.status(200).json({
-        payload: {
-          status: "Success",
-          message: "Usuário deletado com sucesso.",
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(401).json({
-        payload: {
-          status: "Failed",
-          errors: { msg: "Falha ao deletar usuário." },
-        },
-      });
-    }
+    await this.user.deleteUser(req.params.id);
+    return res.status(200);
   };
 }
 

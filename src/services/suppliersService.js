@@ -1,21 +1,13 @@
 const xlsx = require("xlsx");
 const SupplierModel = require("../models/supplierModel");
+const s3 = require("../config/s3");
 
 const {
-  S3Client,
   PutObjectCommand,
   GetObjectCommand,
 } = require("@aws-sdk/client-s3");
 
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-
-const s3 = new S3Client({
-  region: "us-east-1",
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  },
-});
 
 class SupplierService {
   importData = async (file) => {
