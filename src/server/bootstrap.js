@@ -19,14 +19,16 @@ class Server {
   }
 
   start = async () => {
-    await this.db
-      .start()
-      .then(() =>
-        this.app.listen(this.port, () =>
-          console.log("servidor rodando na porta " + this.port)
-        )
-      )
-      .catch((error) => console.log(error));
+    try {
+      await this.db.start();
+      await new Promise((resolve, reject) => {
+        this.app.listen(this.port, resolve).on("error", reject);
+      });
+
+      console.log("servidor rodando na porta " + this.port);
+    } catch (error) {
+      console.log("Erro ao iniciar o servidor" + error);
+    }
   };
 }
 
